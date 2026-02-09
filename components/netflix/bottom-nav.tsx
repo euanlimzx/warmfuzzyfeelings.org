@@ -1,7 +1,7 @@
 "use client"
 
 import { Home, Clapperboard } from "lucide-react"
-import { siteConfig } from "@/lib/config"
+import { useConfig } from "@/lib/config-context"
 
 const iconMap = {
   Home,
@@ -9,8 +9,9 @@ const iconMap = {
 } as const
 
 export function BottomNav() {
-  const { items } = siteConfig.bottomNav
-  const profileColor = siteConfig.navbar.profileColor
+  const config = useConfig()
+  const { items } = config.bottomNav
+  const profileColor = config.navbar.profileColor
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#111111] border-t border-foreground/10">

@@ -2,10 +2,11 @@
 
 import { Play, Info, Plus } from "lucide-react"
 import Image from "next/image"
-import { siteConfig } from "@/lib/config"
+import { useConfig } from "@/lib/config-context"
 
 export function HeroSection() {
-  const hero = siteConfig.hero
+  const config = useConfig()
+  const hero = config.hero
 
   return (
     <>

@@ -1,10 +1,11 @@
 "use client"
 
 import { Search, Bell, ChevronDown, Download } from "lucide-react"
-import { siteConfig } from "@/lib/config"
+import { useConfig } from "@/lib/config-context"
 
 export function Navbar() {
-  const { logo, profileColor, navLinks } = siteConfig.navbar
+  const config = useConfig()
+  const { logo, profileColor, navLinks } = config.navbar
 
   // Derive mobile filters from navLinks
   const mobileFilters = [

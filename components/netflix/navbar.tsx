@@ -5,7 +5,7 @@ import { useConfig } from "@/lib/config-context"
 
 export function Navbar() {
   const config = useConfig()
-  const { logo, profileColor, navLinks } = config.navbar
+  const { logo, navLinks } = config.navbar
 
   // Derive mobile filters from navLinks
   const mobileFilters = [
@@ -71,7 +71,7 @@ export function Navbar() {
           <div className="flex items-center gap-1 cursor-pointer group">
             <div
               className="w-8 h-8 rounded flex items-center justify-center"
-              style={{ backgroundColor: profileColor }}
+              style={{ background: "linear-gradient(135deg, #e50914 0%, #831010 100%)" }}
             >
               <span className="sr-only">Profile</span>
             </div>

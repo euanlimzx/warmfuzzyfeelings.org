@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { Navbar } from "@/components/netflix/navbar"
 import { HeroSection } from "@/components/netflix/hero-section"
 import { ContentRow } from "@/components/netflix/content-row"
@@ -10,12 +10,26 @@ import { useConfig, SiteConfig } from "@/lib/config-context"
 
 export default function Page() {
   const config = useConfig()
-  const [selectedShow, setSelectedShow] = useState<SiteConfig["shows"][0] | null>(null)
+  const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
+
+  // Derive show data from current config
+  const selectedShow = selectedShowId
+    ? config.shows.find((s) => s.id === selectedShowId) ?? null
+    : null
 
   const handleCardClick = useCallback((id: number) => {
-    const detail = config.shows.find((s) => s.id === id)
-    if (detail) setSelectedShow(detail)
-  }, [config.shows])
+    setSelectedShowId(id)
+  }, [])
+
+  // Resolve show IDs to show data for each content row
+  const resolvedRows = useMemo(() => {
+    return config.contentRows.map((row) => ({
+      title: row.title,
+      items: row.showIds
+        .map((id) => config.shows.find((s) => s.id === id))
+        .filter((show): show is SiteConfig["shows"][0] => show !== undefined),
+    }))
+  }, [config.contentRows, config.shows])
 
   return (
     <main className="min-h-screen bg-background">
@@ -24,7 +38,7 @@ export default function Page() {
 
       {/* Content Rows - slightly overlapping the hero on desktop */}
       <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
-        {config.contentRows.map((row) => (
+        {resolvedRows.map((row) => (
           <ContentRow
             key={row.title}
             title={row.title}
@@ -41,7 +55,7 @@ export default function Page() {
       <BottomNav />
 
       {/* Show Detail Modal */}
-      <ShowModal show={selectedShow} onClose={() => setSelectedShow(null)} />
+      <ShowModal show={selectedShow} onClose={() => setSelectedShowId(null)} />
     </main>
   )
 }

@@ -31,12 +31,7 @@ export type SiteConfig = {
   }
   contentRows: Array<{
     title: string
-    items: Array<{
-      id: number
-      title: string
-      image: string
-      tag?: string
-    }>
+    showIds: number[]
   }>
   modal: {
     seriesBadgeLabel: string

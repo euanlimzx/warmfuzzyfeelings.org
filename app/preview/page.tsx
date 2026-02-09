@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { Navbar } from "@/components/netflix/navbar"
 import { HeroSection } from "@/components/netflix/hero-section"
 import { ContentRow } from "@/components/netflix/content-row"
@@ -10,7 +10,12 @@ import { ConfigProvider, getDefaultConfig, SiteConfig } from "@/lib/config-conte
 
 export default function PreviewPage() {
   const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
-  const [selectedShow, setSelectedShow] = useState<SiteConfig["shows"][0] | null>(null)
+  const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
+
+  // Derive show data from current config (updates when config changes)
+  const selectedShow = selectedShowId
+    ? config.shows.find((s) => s.id === selectedShowId) ?? null
+    : null
 
   // Listen for config updates from parent window (editor)
   useEffect(() => {
@@ -29,13 +34,19 @@ export default function PreviewPage() {
     return () => window.removeEventListener("message", handleMessage)
   }, [])
 
-  const handleCardClick = useCallback(
-    (id: number) => {
-      const detail = config.shows.find((s) => s.id === id)
-      if (detail) setSelectedShow(detail)
-    },
-    [config.shows]
-  )
+  const handleCardClick = useCallback((id: number) => {
+    setSelectedShowId(id)
+  }, [])
+
+  // Resolve show IDs to show data for each content row
+  const resolvedRows = useMemo(() => {
+    return config.contentRows.map((row) => ({
+      title: row.title,
+      items: row.showIds
+        .map((id) => config.shows.find((s) => s.id === id))
+        .filter((show): show is SiteConfig["shows"][0] => show !== undefined),
+    }))
+  }, [config.contentRows, config.shows])
 
   return (
     <ConfigProvider config={config}>
@@ -44,7 +55,7 @@ export default function PreviewPage() {
         <HeroSection />
 
         <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
-          {config.contentRows.map((row) => (
+          {resolvedRows.map((row) => (
             <ContentRow
               key={row.title}
               title={row.title}
@@ -56,7 +67,7 @@ export default function PreviewPage() {
 
         <div className="h-24 md:h-20" />
         <BottomNav />
-        <ShowModal show={selectedShow} onClose={() => setSelectedShow(null)} />
+        <ShowModal show={selectedShow} onClose={() => setSelectedShowId(null)} />
       </main>
     </ConfigProvider>
   )

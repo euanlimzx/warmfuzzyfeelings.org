@@ -37,30 +37,15 @@ export const siteConfig = {
   },
 
   // ─── Content Rows ────────────────────────────────────────
+  // Each row references shows by ID - data is pulled from the shows database
   contentRows: [
     {
       title: "Your Next Watch",
-      items: [
-        { id: 1, title: "Reba", image: "/images/card-reba.jpg" },
-        { id: 2, title: "All American", image: "/images/card-allamerican.jpg", tag: "New Season Coming Soon" },
-        { id: 3, title: "Shameless", image: "/images/card-shameless.jpg" },
-        { id: 4, title: "Brooklyn Nine-Nine", image: "/images/card-brooklyn99.jpg" },
-        { id: 5, title: "Stranger Things", image: "/images/card-strangerthings.jpg" },
-        { id: 6, title: "S.W.A.T.", image: "/images/card-swat.jpg" },
-        { id: 7, title: "Ozark", image: "/images/card-ozark.jpg" },
-      ],
+      showIds: [1, 2, 3, 4, 5, 6, 7],
     },
     {
       title: "My List",
-      items: [
-        { id: 8, title: "Young Sheldon", image: "/images/card-youngsheldon.jpg" },
-        { id: 9, title: "Lucifer", image: "/images/card-lucifer.jpg" },
-        { id: 10, title: "The Office", image: "/images/card-theoffice.jpg" },
-        { id: 11, title: "Breaking Bad", image: "/images/card-breakingbad.jpg" },
-        { id: 12, title: "Peaky Blinders", image: "/images/card-peakyblinders.jpg" },
-        { id: 13, title: "The Witcher", image: "/images/card-thewitcher.jpg" },
-        { id: 14, title: "Brooklyn Nine-Nine", image: "/images/card-brooklyn99.jpg" },
-      ],
+      showIds: [8, 9, 10, 11, 12, 13, 14],
     },
   ],
 
@@ -304,7 +289,6 @@ export const siteConfig = {
 export type NavLink = (typeof siteConfig.navbar.navLinks)[number]
 export type BottomNavItem = (typeof siteConfig.bottomNav.items)[number]
 export type ContentRowConfig = (typeof siteConfig.contentRows)[number]
-export type ContentItem = ContentRowConfig["items"][number]
 export type ShowDetail = (typeof siteConfig.shows)[number]
 
 // Helper: look up a show by id

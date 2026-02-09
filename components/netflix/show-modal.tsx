@@ -1,54 +1,54 @@
-"use client"
+"use client";
 
-import { useEffect, useCallback } from "react"
-import { X, Play, Plus, ThumbsUp, Volume2 } from "lucide-react"
-import Image from "next/image"
-import { useConfig } from "@/lib/config-context"
+import { useEffect, useCallback } from "react";
+import { X, Play, Plus, ThumbsUp, Volume2 } from "lucide-react";
+import Image from "next/image";
+import { useConfig } from "@/lib/config-context";
 
 type ShowDetail = {
-  id: number
-  title: string
-  image: string
-  tag?: string
-  matchPercent: number
-  year: number
-  rating: string
-  episodes: string
-  headline: string
-  synopsis: string
-  cast: string[]
-  genres: string[]
-  mood: string
-}
+  id: number;
+  title: string;
+  image: string;
+  tag?: string;
+  matchPercent: number;
+  year: number;
+  rating: string;
+  episodes: string;
+  headline: string;
+  synopsis: string;
+  cast: string[];
+  genres: string[];
+  mood: string;
+};
 
 interface ShowModalProps {
-  show: ShowDetail | null
-  onClose: () => void
+  show: ShowDetail | null;
+  onClose: () => void;
 }
 
 export function ShowModal({ show, onClose }: ShowModalProps) {
-  const config = useConfig()
-  const labels = config.modal
+  const config = useConfig();
+  const labels = config.modal;
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") onClose();
     },
     [onClose],
-  )
+  );
 
   useEffect(() => {
     if (show) {
-      document.body.style.overflow = "hidden"
-      document.addEventListener("keydown", handleKeyDown)
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = ""
-      document.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [show, handleKeyDown])
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [show, handleKeyDown]);
 
-  if (!show) return null
+  if (!show) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center">
@@ -57,7 +57,7 @@ export function ShowModal({ show, onClose }: ShowModalProps) {
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") onClose()
+          if (e.key === "Enter" || e.key === " ") onClose();
         }}
         role="button"
         tabIndex={0}
@@ -218,5 +218,5 @@ export function ShowModal({ show, onClose }: ShowModalProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

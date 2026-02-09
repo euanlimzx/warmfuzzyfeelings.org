@@ -11,7 +11,6 @@ const iconMap = {
 export function BottomNav() {
   const config = useConfig()
   const { items } = config.bottomNav
-  const profileColor = config.navbar.profileColor
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#111111] border-t border-foreground/10">
@@ -27,7 +26,7 @@ export function BottomNav() {
               {item.avatar ? (
                 <div
                   className="w-6 h-6 rounded flex items-center justify-center"
-                  style={{ backgroundColor: profileColor }}
+                  style={{ background: "linear-gradient(135deg, #e50914 0%, #831010 100%)" }}
                 >
                   <span className="sr-only">Profile</span>
                 </div>

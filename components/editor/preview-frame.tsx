@@ -3,11 +3,14 @@
 import { useRef, useEffect, useCallback } from "react"
 import { SiteConfig } from "@/lib/config-context"
 
+type ViewportMode = "mobile" | "desktop"
+
 interface PreviewFrameProps {
   config: SiteConfig
+  viewport: ViewportMode
 }
 
-export function PreviewFrame({ config }: PreviewFrameProps) {
+export function PreviewFrame({ config, viewport }: PreviewFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const isReadyRef = useRef(false)
 
@@ -39,16 +42,53 @@ export function PreviewFrame({ config }: PreviewFrameProps) {
     sendConfig()
   }, [sendConfig])
 
+  // Resend config when viewport changes (iframe size change may need refresh)
+  useEffect(() => {
+    // Small delay to let iframe resize before resending
+    const timer = setTimeout(() => {
+      sendConfig()
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [viewport, sendConfig])
+
   return (
     <div className="relative w-full h-full bg-zinc-900 rounded-lg overflow-hidden">
-      {/* Phone frame styling */}
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-[390px] h-full max-h-[844px] bg-black rounded-[40px] p-2 shadow-2xl">
-          {/* Phone notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-10" />
+      <div className="absolute inset-0 flex items-center justify-center p-4 transition-all duration-300">
+        {/* Frame container - changes style based on viewport */}
+        <div
+          className={`relative flex flex-col overflow-hidden shadow-2xl transition-all duration-300 ${
+            viewport === "desktop"
+              ? "w-full h-full max-w-[1200px] bg-zinc-800 rounded-lg"
+              : "w-full max-w-[390px] h-full max-h-[844px] bg-black rounded-[40px] p-2"
+          }`}
+        >
+          {/* Desktop browser chrome - only shown in desktop mode */}
+          {viewport === "desktop" && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-700 border-b border-zinc-600">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+              </div>
+              <div className="flex-1 mx-4">
+                <div className="bg-zinc-800 rounded-md px-3 py-1 text-xs text-foreground/50">
+                  localhost:3000
+                </div>
+              </div>
+            </div>
+          )}
 
-          {/* Screen */}
-          <div className="w-full h-full bg-black rounded-[32px] overflow-hidden">
+          {/* Mobile notch - only shown in mobile mode */}
+          {viewport === "mobile" && (
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-10" />
+          )}
+
+          {/* Screen/Content area */}
+          <div
+            className={`flex-1 overflow-hidden ${
+              viewport === "mobile" ? "bg-black rounded-[32px]" : ""
+            }`}
+          >
             <iframe
               ref={iframeRef}
               src="/preview"

@@ -1,10 +1,15 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Bebas_Neue } from "next/font/google"
 
 import "./globals.css"
 
 const _inter = Inter({ subsets: ["latin"] })
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bebas",
+})
 
 export const metadata: Metadata = {
   title: "Netflix",
@@ -21,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={bebasNeue.variable}>
       <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
         {children}
       </body>

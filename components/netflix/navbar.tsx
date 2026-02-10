@@ -21,14 +21,11 @@ export function Navbar() {
       <div className="hidden md:flex items-center justify-between px-12 py-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
         {/* Left Section */}
         <div className="flex items-center gap-8">
-          <span
-            className="text-netflix-red font-bold text-3xl tracking-wider select-none"
-            style={{ fontFamily: "'Arial Black', sans-serif" }}
-          >
+          <span className="text-netflix-red font-bold text-3xl tracking-[0.15em] select-none font-bebas">
             {logo}
           </span>
 
-          <ul className="hidden lg:flex items-center gap-5">
+          <ul className="hidden lg:flex items-center gap-5 font-bebas tracking-[0.1em]">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <button
@@ -84,10 +81,7 @@ export function Navbar() {
       <div className="flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent">
         {/* Top row: Greeting + icons */}
         <div className="flex items-center justify-between mb-3">
-          <h2
-            className="text-xl font-bold text-netflix-red tracking-wider select-none"
-            style={{ fontFamily: "'Arial Black', sans-serif" }}
-          >
+          <h2 className="text-xl font-bold text-netflix-red tracking-[0.15em] select-none font-bebas">
             {logo}
           </h2>
           <div className="flex items-center gap-5">

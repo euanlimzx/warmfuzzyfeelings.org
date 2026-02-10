@@ -218,6 +218,23 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
           value={config.hero.image}
           onChange={(v) => update("hero", { image: v })}
         />
+        <div>
+          <label className="block text-sm font-medium text-foreground/70 mb-1.5">
+            Title Font
+          </label>
+          <select
+            value={config.hero.titleFont ?? "default"}
+            onChange={(e) =>
+              update("hero", {
+                titleFont: e.target.value as "default" | "bebas",
+              })
+            }
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
+          >
+            <option value="default">Default (Georgia serif)</option>
+            <option value="bebas">Bebas Neue</option>
+          </select>
+        </div>
         <TextInput
           label="Title"
           value={config.hero.title}

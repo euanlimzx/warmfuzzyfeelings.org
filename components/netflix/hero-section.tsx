@@ -28,8 +28,14 @@ export function HeroSection() {
         {/* Content Overlay */}
         <div className="relative z-10 flex flex-col justify-end h-full px-12 pb-40">
           <h1
-            className="text-7xl lg:text-8xl font-bold text-foreground mb-4 max-w-2xl leading-tight tracking-tight"
-            style={{ fontFamily: "'Georgia', serif", fontStyle: "italic" }}
+            className={`text-7xl lg:text-8xl font-bold text-foreground mb-4 max-w-2xl leading-tight ${
+              hero.titleFont === "bebas" ? "font-bebas tracking-[0.12em]" : "tracking-tight"
+            }`}
+            style={
+              hero.titleFont === "default"
+                ? { fontFamily: "'Georgia', serif", fontStyle: "italic" }
+                : undefined
+            }
           >
             {hero.title}
           </h1>
@@ -107,7 +113,11 @@ export function HeroSection() {
 
             {/* Title and genre tags at the bottom of the poster */}
             <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center">
-              <h1 className="text-4xl font-extrabold text-foreground tracking-widest mb-2 text-center">
+              <h1
+                className={`text-4xl font-extrabold text-foreground mb-2 text-center ${
+                  hero.titleFont === "bebas" ? "font-bebas tracking-[0.12em]" : "tracking-widest"
+                }`}
+              >
                 {hero.title}
               </h1>
               <p className="text-sm text-foreground/70 tracking-wide">

@@ -1,0 +1,6 @@
+- add toggleable font
+- clicking on modal components will open the relevant toggle bar
+- clicking on the yes modal should open a new mdoal to show a message
+- work on mobile edit preview
+- re-styling the entire thing
+- add css grain?

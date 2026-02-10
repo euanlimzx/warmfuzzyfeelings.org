@@ -42,6 +42,7 @@ export function hasChanges(config: SiteConfig): boolean {
 
   // Check hero fields
   if (config.hero.image !== defaults.hero.image) return true
+  if (config.hero.titleFont !== defaults.hero.titleFont) return true
   if (config.hero.title !== defaults.hero.title) return true
   if (config.hero.description !== defaults.hero.description) return true
 

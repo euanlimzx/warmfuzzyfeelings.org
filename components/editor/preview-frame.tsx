@@ -18,11 +18,11 @@ export function PreviewFrame({ config, viewport }: PreviewFrameProps) {
   const sendConfig = useCallback(() => {
     if (iframeRef.current?.contentWindow && isReadyRef.current) {
       iframeRef.current.contentWindow.postMessage(
-        { type: "CONFIG_UPDATE", config },
+        { type: "CONFIG_UPDATE", config, viewport },
         "*"
       )
     }
-  }, [config])
+  }, [config, viewport])
 
   // Listen for iframe ready signal
   useEffect(() => {

@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Monitor, Smartphone } from "lucide-react"
 import { ConfigForm } from "@/components/editor/config-form"
 import { PreviewFrame } from "@/components/editor/preview-frame"
 import { CreateButton } from "@/components/editor/create-button"
 import { ShareDialog } from "@/components/editor/share-dialog"
 import { getDefaultConfig, SiteConfig } from "@/lib/config-context"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 type ViewportMode = "mobile" | "desktop"
 
@@ -14,6 +15,28 @@ export default function EditPage() {
   const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
   const [viewport, setViewport] = useState<ViewportMode>("mobile")
   const [shareUuid, setShareUuid] = useState<string | null>(null)
+  const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>("hero")
+  const isBrowserMobile = useIsMobile()
+
+  // When browser is desktop (not mobile): listen for preview clicks and open the matching sidebar section
+  useEffect(() => {
+    if (isBrowserMobile) return
+    function handleMessage(event: MessageEvent) {
+      const data = event.data
+      if (data?.type !== "PREVIEW_CLICK") return
+      if (data.target === "navbar") {
+        setSidebarOpenKey("navbar")
+      } else if (data.target === "hero") {
+        setSidebarOpenKey("hero")
+      } else if (data.target === "show" && typeof data.showIndex === "number") {
+        if (data.showIndex >= 0) {
+          setSidebarOpenKey(`show-${data.showIndex}`)
+        }
+      }
+    }
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [isBrowserMobile])
 
   return (
     <div className="h-screen flex bg-zinc-950">
@@ -26,7 +49,12 @@ export default function EditPage() {
           <CreateButton config={config} onSuccess={setShareUuid} />
         </div>
         <div className="flex-1 overflow-hidden">
-          <ConfigForm config={config} onChange={setConfig} />
+          <ConfigForm
+          config={config}
+          onChange={setConfig}
+          openSectionKey={sidebarOpenKey}
+          onOpenSectionKeyChange={setSidebarOpenKey}
+        />
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useEffect, forwardRef } from "react"
 import { ChevronDown } from "lucide-react"
 import { SiteConfig } from "@/lib/config-context"
 import { ImageUpload } from "./image-upload"
@@ -8,25 +8,49 @@ import { ImageUpload } from "./image-upload"
 interface ConfigFormProps {
   config: SiteConfig
   onChange: (config: SiteConfig) => void
+  openSectionKey?: string | null
+  onOpenSectionKeyChange?: (key: string | null) => void
 }
 
-// Collapsible section component
-function Section({
-  title,
-  defaultOpen = false,
-  children,
-}: {
-  title: string
-  defaultOpen?: boolean
-  children: React.ReactNode
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
+// Collapsible section component (controlled by openSectionKey when provided)
+const Section = forwardRef<
+  HTMLDivElement,
+  {
+    title: string
+    sectionKey: string
+    openSectionKey: string | null
+    onOpenSectionKeyChange: (key: string | null) => void
+    isOpenOverride?: boolean
+    onToggleOverride?: () => void
+    children: React.ReactNode
+  }
+>(function Section(
+  {
+    title,
+    sectionKey,
+    openSectionKey,
+    onOpenSectionKeyChange,
+    isOpenOverride,
+    onToggleOverride,
+    children,
+  },
+  ref
+) {
+  const isOpen =
+    isOpenOverride ?? openSectionKey === sectionKey
+  const handleToggle = () => {
+    if (onToggleOverride) {
+      onToggleOverride()
+    } else {
+      onOpenSectionKeyChange(openSectionKey === sectionKey ? null : sectionKey)
+    }
+  }
 
   return (
-    <div className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div ref={ref} className="border border-zinc-800 rounded-lg overflow-hidden">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="w-full flex items-center justify-between px-4 py-3 bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
       >
         <span className="font-medium text-foreground">{title}</span>
@@ -39,7 +63,7 @@ function Section({
       {isOpen && <div className="p-4 space-y-4">{children}</div>}
     </div>
   )
-}
+})
 
 // Reusable input components
 function TextInput({
@@ -95,23 +119,30 @@ function TextArea({
   )
 }
 
-// Collapsible show item component
-function ShowItem({
-  show,
-  index,
-  onUpdate,
-}: {
-  show: SiteConfig["shows"][0]
-  index: number
-  onUpdate: (index: number, updates: Partial<SiteConfig["shows"][0]>) => void
-}) {
-  const [isOpen, setIsOpen] = useState(false)
+// Collapsible show item component (controlled by openSectionKey)
+const ShowItem = forwardRef<
+  HTMLDivElement,
+  {
+    show: SiteConfig["shows"][0]
+    index: number
+    itemKey: string
+    openSectionKey: string | null
+    onOpenSectionKeyChange: (key: string | null) => void
+    onUpdate: (index: number, updates: Partial<SiteConfig["shows"][0]>) => void
+  }
+>(function ShowItem(
+  { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate },
+  ref
+) {
+  const isOpen = openSectionKey === itemKey
 
   return (
-    <div className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div ref={ref} className="border border-zinc-800 rounded-lg overflow-hidden">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() =>
+          onOpenSectionKeyChange(isOpen ? null : itemKey)
+        }
         className="w-full flex items-center justify-between px-4 py-3 bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
       >
         <span className="font-medium text-foreground">Show {index + 1}</span>
@@ -177,9 +208,36 @@ function ShowItem({
       )}
     </div>
   )
-}
+})
 
-export function ConfigForm({ config, onChange }: ConfigFormProps) {
+export function ConfigForm({
+  config,
+  onChange,
+  openSectionKey = null,
+  onOpenSectionKeyChange = () => {},
+}: ConfigFormProps) {
+  const navbarRef = useRef<HTMLDivElement>(null)
+  const heroRef = useRef<HTMLDivElement>(null)
+  const showsDatabaseRef = useRef<HTMLDivElement>(null)
+  const showItemRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
+
+  // Scroll the opened section into view when openSectionKey changes
+  useEffect(() => {
+    if (!openSectionKey) return
+    if (openSectionKey === "navbar") {
+      navbarRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    } else if (openSectionKey === "hero") {
+      heroRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    } else if (openSectionKey.startsWith("show-")) {
+      const index = parseInt(openSectionKey.replace("show-", ""), 10)
+      if (!Number.isNaN(index)) {
+        showItemRefs.current.get(index)?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        })
+      }
+    }
+  }, [openSectionKey])
   // Helper to update nested config
   const update = <K extends keyof SiteConfig>(
     section: K,
@@ -203,7 +261,13 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
   return (
     <div className="h-full overflow-y-auto p-4 space-y-4">
       {/* Navbar Section - Only Logo */}
-      <Section title="Navbar" defaultOpen>
+      <Section
+        ref={navbarRef}
+        title="Navbar"
+        sectionKey="navbar"
+        openSectionKey={openSectionKey}
+        onOpenSectionKeyChange={onOpenSectionKeyChange}
+      >
         <TextInput
           label="Logo Text"
           value={config.navbar.logo}
@@ -212,7 +276,13 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
       </Section>
 
       {/* Hero Section - Limited Fields */}
-      <Section title="Hero Section" defaultOpen>
+      <Section
+        ref={heroRef}
+        title="Hero Section"
+        sectionKey="hero"
+        openSectionKey={openSectionKey}
+        onOpenSectionKeyChange={onOpenSectionKeyChange}
+      >
         <ImageUpload
           label="Desktop Hero Image"
           value={config.hero.image}
@@ -253,13 +323,37 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
       </Section>
 
       {/* Shows Database Section - Limited Fields */}
-      <Section title="Shows Database">
+      <Section
+        ref={showsDatabaseRef}
+        title="Shows Database"
+        sectionKey="shows-database"
+        openSectionKey={openSectionKey}
+        onOpenSectionKeyChange={onOpenSectionKeyChange}
+        isOpenOverride={
+          openSectionKey === "shows-database" ||
+          (openSectionKey !== null && openSectionKey.startsWith("show-"))
+        }
+        onToggleOverride={() =>
+          onOpenSectionKeyChange(
+            openSectionKey === "shows-database" ||
+              (openSectionKey !== null && openSectionKey.startsWith("show-"))
+              ? null
+              : "shows-database"
+          )
+        }
+      >
         <div className="space-y-4">
           {config.shows.map((show, index) => (
             <ShowItem
               key={show.id}
+              ref={(el) => {
+                showItemRefs.current.set(index, el)
+              }}
               show={show}
               index={index}
+              itemKey={`show-${index}`}
+              openSectionKey={openSectionKey}
+              onOpenSectionKeyChange={onOpenSectionKeyChange}
               onUpdate={updateShow}
             />
           ))}

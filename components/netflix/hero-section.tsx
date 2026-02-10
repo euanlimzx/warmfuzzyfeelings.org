@@ -4,14 +4,21 @@ import { Play, Info, Plus } from "lucide-react"
 import Image from "next/image"
 import { useConfig } from "@/lib/config-context"
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onEditorHeroClick?: () => void
+}
+
+export function HeroSection({ onEditorHeroClick }: HeroSectionProps) {
   const config = useConfig()
   const hero = config.hero
 
   return (
     <>
       {/* Desktop Hero */}
-      <section className="relative w-full h-[85vh] min-h-[500px] hidden md:block">
+      <section
+        className="relative w-full h-[85vh] min-h-[500px] hidden md:block"
+        onClick={onEditorHeroClick}
+      >
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -93,7 +100,10 @@ export function HeroSection() {
       </section>
 
       {/* Mobile Hero */}
-      <section className="relative w-full md:hidden pt-28 px-4 pb-4">
+      <section
+        className="relative w-full md:hidden pt-28 px-4 pb-4"
+        onClick={onEditorHeroClick}
+      >
         {/* Background tint */}
         <div className="absolute inset-0 bg-background" />
 

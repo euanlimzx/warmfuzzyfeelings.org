@@ -9,9 +9,12 @@ import { ShowModal } from "@/components/netflix/show-modal"
 import { NetflixIntro } from "@/components/netflix/netflix-intro"
 import { ConfigProvider, getDefaultConfig, SiteConfig } from "@/lib/config-context"
 
+type EditorViewport = "mobile" | "desktop" | null
+
 export default function PreviewPage() {
   const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
   const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
+  const [editorViewport, setEditorViewport] = useState<EditorViewport>(null)
 
   // Derive show data from current config (updates when config changes)
   const selectedShow = selectedShowId
@@ -21,9 +24,14 @@ export default function PreviewPage() {
   // Listen for config updates from parent window (editor)
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      // Validate message origin in production
-      if (event.data?.type === "CONFIG_UPDATE" && event.data?.config) {
-        setConfig(event.data.config)
+      const data = event.data
+      if (data?.type === "CONFIG_UPDATE" && data?.config) {
+        setConfig(data.config)
+        if (data.viewport === "mobile" || data.viewport === "desktop") {
+          setEditorViewport(data.viewport)
+        } else {
+          setEditorViewport(null)
+        }
       }
     }
 
@@ -35,8 +43,31 @@ export default function PreviewPage() {
     return () => window.removeEventListener("message", handleMessage)
   }, [])
 
-  const handleCardClick = useCallback((id: number) => {
-    setSelectedShowId(id)
+  const handleCardClick = useCallback(
+    (id: number) => {
+      setSelectedShowId(id)
+      if (editorViewport !== null) {
+        const showIndex = config.shows.findIndex((s) => s.id === id)
+        if (showIndex >= 0) {
+          window.parent.postMessage(
+            { type: "PREVIEW_CLICK", target: "show", showIndex },
+            "*"
+          )
+        }
+      }
+    },
+    [editorViewport, config.shows]
+  )
+
+  const handleEditorNavbarClick = useCallback(() => {
+    window.parent.postMessage(
+      { type: "PREVIEW_CLICK", target: "navbar" },
+      "*"
+    )
+  }, [])
+
+  const handleEditorHeroClick = useCallback(() => {
+    window.parent.postMessage({ type: "PREVIEW_CLICK", target: "hero" }, "*")
   }, [])
 
   // Resolve show IDs to show data for each content row
@@ -53,8 +84,16 @@ export default function PreviewPage() {
     <ConfigProvider config={config}>
       <NetflixIntro />
       <main className="min-h-screen bg-background">
-        <Navbar />
-        <HeroSection />
+        <Navbar
+          onEditorNavbarClick={
+            editorViewport !== null ? handleEditorNavbarClick : undefined
+          }
+        />
+        <HeroSection
+          onEditorHeroClick={
+            editorViewport !== null ? handleEditorHeroClick : undefined
+          }
+        />
 
         <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
           {resolvedRows.map((row) => (

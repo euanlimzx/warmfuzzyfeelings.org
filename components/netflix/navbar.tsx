@@ -3,7 +3,11 @@
 import { Search, Bell, ChevronDown, Download } from "lucide-react"
 import { useConfig } from "@/lib/config-context"
 
-export function Navbar() {
+interface NavbarProps {
+  onEditorNavbarClick?: () => void
+}
+
+export function Navbar({ onEditorNavbarClick }: NavbarProps) {
   const config = useConfig()
   const { logo, navLinks } = config.navbar
 
@@ -23,7 +27,10 @@ export function Navbar() {
         aria-hidden
       />
       {/* Desktop Navbar */}
-      <div className="relative z-10 hidden md:flex items-center justify-between px-12 py-3">
+      <div
+        className="relative z-10 hidden md:flex items-center justify-between px-12 py-3"
+        onClick={onEditorNavbarClick}
+      >
         {/* Left Section */}
         <div className="flex items-center gap-8">
           <span className="text-netflix-red font-bold text-3xl tracking-[0.15em] select-none font-bebas">
@@ -83,7 +90,10 @@ export function Navbar() {
       </div>
 
       {/* Mobile Navbar */}
-      <div className="relative z-10 flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent">
+      <div
+        className="relative z-10 flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent"
+        onClick={onEditorNavbarClick}
+      >
         {/* Top row: Greeting + icons */}
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-bold text-netflix-red tracking-[0.15em] select-none font-bebas">

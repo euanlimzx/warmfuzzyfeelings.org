@@ -6,7 +6,7 @@ import { ConfigForm } from "@/components/editor/config-form";
 import { PreviewFrame } from "@/components/editor/preview-frame";
 import { CreateButton } from "@/components/editor/create-button";
 import { ShareDialog } from "@/components/editor/share-dialog";
-import { getDefaultConfig } from "@/lib/brands";
+import { getDefaultConfigForEditing } from "@/lib/brands";
 import { useBrand } from "@/lib/brand-context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { BrandConfig } from "@/lib/brands";
@@ -17,7 +17,7 @@ type MobileView = "editor" | "preview";
 export default function EditPage() {
   const brand = useBrand();
   const [config, setConfig] = useState<BrandConfig>(() =>
-    getDefaultConfig(brand),
+    getDefaultConfigForEditing(brand),
   );
   const [viewport, setViewport] = useState<ViewportMode>("mobile");
 

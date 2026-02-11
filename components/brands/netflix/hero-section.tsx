@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
 import { Play, Plus } from "lucide-react";
 import Image from "next/image";
 import { useConfig } from "@/lib/config-context";
@@ -15,6 +16,52 @@ export function HeroSection({
 }: HeroSectionProps) {
   const config = useConfig();
   const hero = config.hero;
+  const desktopHeroRef = useRef<HTMLDivElement>(null);
+  const [gradientStart, setGradientStart] = useState<number | null>(null);
+
+  // Measure where the image's left edge is (with object-contain object-right)
+  // and position the gradient to start there, eliminating the sharp line
+  useEffect(() => {
+    const container = desktopHeroRef.current;
+    if (!container) return;
+
+    const updateGradient = () => {
+      const img = container.querySelector("img");
+      if (!img || !img.complete) return;
+
+      const containerRect = container.getBoundingClientRect();
+      if (containerRect.width === 0 || containerRect.height === 0) return;
+
+      const naturalW = img.naturalWidth;
+      const naturalH = img.naturalHeight;
+      if (!naturalW || !naturalH) return;
+
+      const scale = Math.min(
+        containerRect.width / naturalW,
+        containerRect.height / naturalH
+      );
+      const renderedWidth = naturalW * scale;
+      const leftEdge = containerRect.width - renderedWidth; // object-right
+      const startPct = Math.max(0, (leftEdge / containerRect.width) * 100);
+
+      setGradientStart(startPct);
+    };
+
+    const img = container.querySelector("img");
+    if (img?.complete) {
+      updateGradient();
+    } else {
+      img?.addEventListener("load", updateGradient);
+    }
+
+    const ro = new ResizeObserver(updateGradient);
+    ro.observe(container);
+
+    return () => {
+      img?.removeEventListener("load", updateGradient);
+      ro.disconnect();
+    };
+  }, [hero.image]);
 
   return (
     <>
@@ -24,7 +71,7 @@ export function HeroSection({
         onClick={onEditorHeroClick}
       >
         {/* Background Image */}
-        <div className="absolute inset-0 bg-background">
+        <div ref={desktopHeroRef} className="absolute inset-0 bg-background">
           <Image
             src={hero.image || "/placeholder.svg"}
             alt={hero.imageAlt}
@@ -33,7 +80,16 @@ export function HeroSection({
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
+          {/* Gradient starts at image edge - smooth fade, no sharp line */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: (() => {
+                const start = gradientStart ?? 25; // fallback until measured
+                return `linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${start}%, rgba(0,0,0,0.9) ${start + 5}%, rgba(0,0,0,0.6) ${start + 15}%, rgba(0,0,0,0.3) ${start + 30}%, transparent ${start + 50}%)`;
+              })(),
+            }}
+          />
         </div>
 
         {/* Content Overlay */}

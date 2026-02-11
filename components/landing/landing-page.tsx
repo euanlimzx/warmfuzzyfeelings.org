@@ -46,11 +46,6 @@ export function LandingPage() {
           </Highlighter>
         </h1>
 
-        {/* Subtitle */}
-        <p className="mt-6 text-lg md:text-xl text-zinc-500 text-center max-w-xl">
-          netflix and chillin 😉
-        </p>
-
         {/* Make your own button */}
         <button
           onClick={handleMakeYourOwnClick}
@@ -58,6 +53,23 @@ export function LandingPage() {
         >
           make your own ♥
         </button>
+
+        {/* Hero video - webm first, mp4 fallback */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="mt-8 w-full max-w-2xl rounded-xl overflow-hidden shadow-xl"
+        >
+          <source src="/gifs/main-video%20(1).webm" type="video/webm" />
+          <source src="/gifs/main-video%20(1).mp4" type="video/mp4" />
+        </video>
+
+        {/* Subtitle */}
+        <p className="mt-6 text-md md:text-lg text-zinc-500 text-center max-w-xl">
+          Make your own Netflix-themed card 😉
+        </p>
       </div>
 
       {/* Mobile confirmation modal */}

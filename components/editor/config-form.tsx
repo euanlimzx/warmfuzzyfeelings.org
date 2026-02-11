@@ -145,7 +145,15 @@ const ShowItem = forwardRef<
     canHide: boolean;
   }
 >(function ShowItem(
-  { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate, canHide },
+  {
+    show,
+    index,
+    itemKey,
+    openSectionKey,
+    onOpenSectionKeyChange,
+    onUpdate,
+    canHide,
+  },
   ref,
 ) {
   const isOpen = openSectionKey === itemKey;
@@ -174,7 +182,13 @@ const ShowItem = forwardRef<
                   : "text-gray-300 cursor-not-allowed"
                 : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
             }`}
-            title={isVisible ? (canHide ? "Hide show" : "Minimum 6 shows required") : "Show in preview"}
+            title={
+              isVisible
+                ? canHide
+                  ? "Hide show"
+                  : "Minimum 6 shows required"
+                : "Show in preview"
+            }
           >
             {isVisible ? (
               <Eye className="w-5 h-5" />
@@ -192,7 +206,8 @@ const ShowItem = forwardRef<
                 isVisible ? "text-gray-900" : "text-gray-400"
               }`}
               style={{
-                fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+                fontFamily:
+                  "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
               Show {index + 1}
@@ -335,7 +350,9 @@ export function ConfigForm({
   };
 
   // Calculate if hiding another show is allowed (minimum 6 visible)
-  const visibleShowCount = config.shows.filter((s) => s.visible !== false).length;
+  const visibleShowCount = config.shows.filter(
+    (s) => s.visible !== false,
+  ).length;
   const canHide = visibleShowCount > 6;
 
   return (
@@ -387,7 +404,7 @@ export function ConfigForm({
             }
             className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
           >
-            <option value="default">Default (Georgia serif)</option>
+            <option value="default">Georgia Serif</option>
             <option value="bebas">Bebas Neue</option>
             <option value="sf-pro">Inter (SF-style)</option>
           </select>

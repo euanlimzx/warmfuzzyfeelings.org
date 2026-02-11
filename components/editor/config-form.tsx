@@ -187,6 +187,7 @@ const ShowItem = forwardRef<
             label="Headline"
             value={show.headline}
             onChange={(v) => onUpdate(index, { headline: v })}
+            placeholder="e.g. When We Couldn't Stop Laughing"
           />
 
           <TextArea
@@ -194,6 +195,7 @@ const ShowItem = forwardRef<
             value={show.synopsis}
             onChange={(v) => onUpdate(index, { synopsis: v })}
             rows={2}
+            placeholder="e.g. you told me that stupid joke and i still don't get it but watching u laugh made my whole year"
           />
 
           <TextInput
@@ -304,6 +306,7 @@ export function ConfigForm({
           label="Logo Text"
           value={config.navbar.logo}
           onChange={(v) => update("navbar", { logo: v })}
+          placeholder="NETFLIX"
         />
       </Section>
 
@@ -347,17 +350,19 @@ export function ConfigForm({
           label="Title"
           value={config.hero.title}
           onChange={(v) => update("hero", { title: v })}
+          placeholder="Be my valentine?"
         />
         <TextArea
           label="Description"
           value={config.hero.description}
           onChange={(v) => update("hero", { description: v })}
+          placeholder="P.S. You can't say no"
         />
         <TextInput
           label="Play button label"
           value={config.hero.playButtonLabel}
           onChange={(v) => update("hero", { playButtonLabel: v })}
-          placeholder="Play"
+          placeholder="Yes"
         />
         <TextInput
           label="My List button label"
@@ -376,7 +381,7 @@ export function ConfigForm({
                 .filter(Boolean),
             })
           }
-          placeholder="Comedy, Family, Heartwarming"
+          placeholder="Adventurous, Goofy, Forever Yours"
         />
       </Section>
 
@@ -393,7 +398,7 @@ export function ConfigForm({
           value={config.modal.fullscreenMessage ?? "Hello"}
           onChange={(v) => update("modal", { fullscreenMessage: v })}
           rows={4}
-          placeholder="Hello"
+          placeholder="I love you. Happy Valentine's Day! 💕"
         />
       </Section>
 

@@ -61,10 +61,6 @@ export function SavedPreviewClient({ config }: Props) {
         <ShowModal
           show={selectedShow}
           onClose={() => setSelectedShowId(null)}
-          onPlayClick={() => {
-            setSelectedShowId(null);
-            setFullscreenPlayerOpen(true);
-          }}
         />
         <FullscreenPlayerOverlay
           open={fullscreenPlayerOpen}

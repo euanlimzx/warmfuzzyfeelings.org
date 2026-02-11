@@ -118,10 +118,6 @@ export default function PreviewPage() {
         <ShowModal
           show={selectedShow}
           onClose={() => setSelectedShowId(null)}
-          onPlayClick={() => {
-            setSelectedShowId(null);
-            setFullscreenPlayerOpen(true);
-          }}
         />
         <FullscreenPlayerOverlay
           open={fullscreenPlayerOpen}

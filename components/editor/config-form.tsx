@@ -47,20 +47,22 @@ const Section = forwardRef<
   }
 
   return (
-    <div ref={ref} className="border border-gray-200 rounded-lg overflow-hidden">
+    <div ref={ref} className="bg-white">
       <button
         type="button"
         onClick={handleToggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+        className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-medium text-gray-900">{title}</span>
+        <span className="font-bold text-gray-900 text-[22px] tracking-[-0.02em]" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+          {title}
+        </span>
         <ChevronDown
-          className={`w-4 h-4 text-gray-500 transition-transform ${
-            isOpen ? "rotate-180" : ""
+          className={`w-5 h-5 text-gray-900 transition-transform ${
+            isOpen ? "" : "-rotate-90"
           }`}
         />
       </button>
-      {isOpen && <div className="p-4 space-y-4 bg-white">{children}</div>}
+      {isOpen && <div className="px-6 pb-6 space-y-4 bg-white">{children}</div>}
     </div>
   )
 })
@@ -79,7 +81,7 @@ function TextInput({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-600 mb-1.5">
+      <label className="block text-base font-medium text-gray-600 mb-1.5">
         {label}
       </label>
       <input
@@ -87,7 +89,7 @@ function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
+        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
       />
     </div>
   )
@@ -108,7 +110,7 @@ function TextArea({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-600 mb-1.5">
+      <label className="block text-base font-medium text-gray-600 mb-1.5">
         {label}
       </label>
       <textarea
@@ -116,7 +118,7 @@ function TextArea({
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent resize-none"
+        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300 resize-none"
       />
     </div>
   )
@@ -140,23 +142,25 @@ const ShowItem = forwardRef<
   const isOpen = openSectionKey === itemKey
 
   return (
-    <div ref={ref} className="border border-gray-200 rounded-lg overflow-hidden">
+    <div ref={ref} className="bg-white">
       <button
         type="button"
         onClick={() =>
           onOpenSectionKeyChange(isOpen ? null : itemKey)
         }
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+        className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-medium text-gray-900">Show {index + 1}</span>
+        <span className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+          Show {index + 1}
+        </span>
         <ChevronDown
-          className={`w-4 h-4 text-gray-500 transition-transform ${
-            isOpen ? "rotate-180" : ""
+          className={`w-5 h-5 text-gray-900 transition-transform ${
+            isOpen ? "" : "-rotate-90"
           }`}
         />
       </button>
       {isOpen && (
-        <div className="p-4 space-y-4 bg-white">
+        <div className="px-6 pb-6 space-y-4 bg-white">
           <TextInput
             label="Title"
             value={show.title}
@@ -265,7 +269,7 @@ export function ConfigForm({
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4 space-y-4">
+    <div className="h-full overflow-y-auto bg-white">
       {/* Navbar Section - Only Logo */}
       <Section
         ref={navbarRef}
@@ -300,7 +304,7 @@ export function ConfigForm({
           onChange={(v) => update("hero", { mobileImage: v })}
         />
         <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1.5">
+          <label className="block text-base font-medium text-gray-600 mb-1.5">
             Title Font
           </label>
           <select
@@ -310,7 +314,7 @@ export function ConfigForm({
                 titleFont: e.target.value as "default" | "bebas" | "sf-pro",
               })
             }
-            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
           >
             <option value="default">Default (Georgia serif)</option>
             <option value="bebas">Bebas Neue</option>

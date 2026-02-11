@@ -122,7 +122,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
 
   return (
     <div className={className}>
-      <label className="block text-sm font-medium text-gray-600 mb-1.5">
+      <label className="block text-base font-medium text-gray-600 mb-1.5">
         {label}
       </label>
 
@@ -173,7 +173,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
                 type="button"
                 onClick={handleRemove}
                 disabled={isUploading}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-md text-sm font-medium transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-black hover:bg-zinc-800 text-white rounded-md text-sm font-medium transition-colors disabled:opacity-50"
               >
                 <X className="w-4 h-4" />
                 Remove
@@ -194,7 +194,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
             aspect-video w-full rounded-md border-2 border-dashed
             cursor-pointer transition-colors
             ${isDragging
-              ? "border-netflix-red bg-red-50"
+              ? "border-gray-400 bg-gray-50"
               : error
                 ? "border-red-500 bg-red-50"
                 : "border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100"

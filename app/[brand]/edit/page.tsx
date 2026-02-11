@@ -49,12 +49,6 @@ export default function EditPage() {
       <div className="h-screen flex bg-gray-50 text-gray-900 font-sans">
         {/* Left Panel - Config Form (Light Mode) */}
         <div className="w-[400px] flex-shrink-0 border-r border-gray-200 bg-white flex flex-col">
-          <div className="h-14 flex items-center justify-between px-6 border-b border-gray-200">
-            <h1 className="text-lg font-semibold text-gray-900">
-              Edit Configuration
-            </h1>
-            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
-          </div>
           <div className="flex-1 overflow-hidden">
             <ConfigForm
               config={config}
@@ -63,43 +57,45 @@ export default function EditPage() {
               onOpenSectionKeyChange={setSidebarOpenKey}
             />
           </div>
+          <div className="p-6">
+            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
+          </div>
         </div>
 
         {/* Right Panel - Preview */}
-        <div className="flex-1 flex flex-col bg-gray-50">
-          <div className="h-14 flex items-center justify-between px-6 border-b border-gray-200 bg-white">
-            <h2 className="text-sm font-semibold text-gray-700">Preview</h2>
-
-            {/* Viewport Toggle */}
-            <div className="flex items-center gap-1 p-1 bg-gray-100 border border-gray-200 rounded-lg">
-              <button
-                type="button"
-                onClick={() => setViewport("mobile")}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  viewport === "mobile"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                <Smartphone className="w-4 h-4" />
-                Mobile
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewport("desktop")}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  viewport === "desktop"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                <Monitor className="w-4 h-4" />
-                Desktop
-              </button>
+        <div className="flex-1 bg-white px-6 pb-10">
+          <div className="flex h-full items-center justify-center">
+            <div className="flex w-full max-w-5xl flex-col items-center gap-4">
+              <div className="flex items-center justify-center">
+                <div className="flex items-center gap-1 rounded-full bg-gray-100 p-1 shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => setViewport("mobile")}
+                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                      viewport === "mobile"
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <Smartphone className="h-4 w-4" />
+                    <span className="hidden sm:inline">Mobile</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewport("desktop")}
+                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                      viewport === "desktop"
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <Monitor className="h-4 w-4" />
+                    <span className="hidden sm:inline">Desktop</span>
+                  </button>
+                </div>
+              </div>
+              <PreviewFrame config={config} viewport={viewport} brand={brand} />
             </div>
-          </div>
-          <div className="flex-1 p-4 bg-gray-50">
-            <PreviewFrame config={config} viewport={viewport} brand={brand} />
           </div>
         </div>
 
@@ -119,13 +115,7 @@ export default function EditPage() {
     <div className="relative h-screen bg-gray-50 text-gray-900 font-sans">
       {mobileView === "editor" ? (
         <div className="flex h-full flex-col bg-white">
-          <div className="h-14 flex items-center justify-between px-4 border-b border-gray-200">
-            <h1 className="text-base font-semibold text-gray-900">
-              Edit Configuration
-            </h1>
-            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
-          </div>
-          <div className="flex-1 overflow-auto px-4 py-4">
+          <div className="flex-1 overflow-auto">
             <ConfigForm
               config={config}
               onChange={setConfig}
@@ -133,48 +123,57 @@ export default function EditPage() {
               onOpenSectionKeyChange={setSidebarOpenKey}
             />
           </div>
+          <div className="p-4">
+            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
+          </div>
         </div>
       ) : (
-        <div className="flex h-full flex-col bg-gray-50">
-          <div className="h-14 flex items-center justify-between px-4 border-b border-gray-200 bg-white">
-            <h2 className="text-sm font-semibold text-gray-700">Preview</h2>
-            {/* Viewport Toggle (same behavior as desktop) */}
-            <div className="flex items-center gap-1 p-1 bg-gray-100 border border-gray-200 rounded-lg">
-              <button
-                type="button"
-                onClick={() => setViewport("mobile")}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  viewport === "mobile"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                <Smartphone className="w-3 h-3" />
-                Mobile
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewport("desktop")}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  viewport === "desktop"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                <Monitor className="w-3 h-3" />
-                Desktop
-              </button>
-            </div>
-          </div>
-          <div className="flex-1 p-3 bg-gray-50">
-            {viewport === "desktop" ? (
-              <div className="flex h-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-center text-sm text-gray-600">
-                Landscape previews are not supported on mobile. Please switch
-                back to the Mobile view.
+        <div className="flex h-full flex-col bg-white px-4 pb-6">
+          <div className="flex-1">
+            <div className="flex h-full items-center justify-center">
+              <div className="flex w-full max-w-md flex-col items-center gap-4">
+                <div className="flex items-center justify-center">
+                  <div className="flex items-center gap-1 rounded-full bg-gray-100 p-1 shadow-sm">
+                    <button
+                      type="button"
+                      onClick={() => setViewport("mobile")}
+                      className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                        viewport === "mobile"
+                          ? "bg-white text-gray-900 shadow-sm"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
+                    >
+                      <Smartphone className="h-3 w-3" />
+                      Mobile
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setViewport("desktop")}
+                      className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                        viewport === "desktop"
+                          ? "bg-white text-gray-900 shadow-sm"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
+                    >
+                      <Monitor className="h-3 w-3" />
+                      Desktop
+                    </button>
+                  </div>
+                </div>
+                {viewport === "desktop" ? (
+                  <div className="flex h-full w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-6 text-center text-sm text-gray-600">
+                    Landscape previews are not supported on mobile. Please
+                    switch back to the Mobile view.
+                  </div>
+                ) : (
+                  <PreviewFrame
+                    config={config}
+                    viewport={viewport}
+                    brand={brand}
+                  />
+                )}
               </div>
-            ) : (
-              <PreviewFrame config={config} viewport={viewport} brand={brand} />
-            )}
+            </div>
           </div>
         </div>
       )}

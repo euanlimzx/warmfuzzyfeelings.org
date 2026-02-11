@@ -78,6 +78,8 @@ export type BrandConfig = {
     moreLabel: string
     hdBadge: string
     adBadge: string
+    /** Message shown in fullscreen play overlay after the intro; supports line breaks */
+    fullscreenMessage: string
   }
   shows: ShowDetail[]
 }

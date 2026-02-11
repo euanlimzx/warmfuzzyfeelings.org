@@ -218,6 +218,7 @@ export function ConfigForm({
 }: ConfigFormProps) {
   const navbarRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const fullscreenMessageRef = useRef<HTMLDivElement>(null)
   const showsDatabaseRef = useRef<HTMLDivElement>(null)
   const showItemRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
 
@@ -228,6 +229,8 @@ export function ConfigForm({
       navbarRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
     } else if (openSectionKey === "hero") {
       heroRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    } else if (openSectionKey === "fullscreen-message") {
+      fullscreenMessageRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
     } else if (openSectionKey.startsWith("show-")) {
       const index = parseInt(openSectionKey.replace("show-", ""), 10)
       if (!Number.isNaN(index)) {
@@ -341,6 +344,23 @@ export function ConfigForm({
             })
           }
           placeholder="Comedy, Family, Heartwarming"
+        />
+      </Section>
+
+      {/* Fullscreen Play Message */}
+      <Section
+        ref={fullscreenMessageRef}
+        title="Fullscreen Play Message"
+        sectionKey="fullscreen-message"
+        openSectionKey={openSectionKey}
+        onOpenSectionKeyChange={onOpenSectionKeyChange}
+      >
+        <TextArea
+          label="Message (shown after intro; line breaks are kept)"
+          value={config.modal.fullscreenMessage ?? "Hello"}
+          onChange={(v) => update("modal", { fullscreenMessage: v })}
+          rows={4}
+          placeholder="Hello"
         />
       </Section>
 

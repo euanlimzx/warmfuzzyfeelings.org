@@ -48,6 +48,9 @@ export function hasChanges(config: BrandConfig, brand: Brand): boolean {
   if (config.hero.title !== defaults.hero.title) return true
   if (config.hero.description !== defaults.hero.description) return true
 
+  // Check modal fullscreen message
+  if ((config.modal.fullscreenMessage ?? "") !== (defaults.modal.fullscreenMessage ?? "")) return true
+
   // Check shows
   if (config.shows.length !== defaults.shows.length) return true
 

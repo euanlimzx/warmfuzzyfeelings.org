@@ -66,6 +66,7 @@ export const netflixConfig: BrandConfig = {
     moreLabel: "more",
     hdBadge: "HD",
     adBadge: "AD",
+    fullscreenMessage: "Hello",
   },
 
   // ─── Show Details Database ───────────────────────────────

@@ -35,6 +35,7 @@ export async function savePreview(config: BrandConfig, brand: Brand): Promise<st
       cast: show.cast,
       genres: show.genres,
       mood: show.mood,
+      visible: show.visible,
     })),
   }
 

@@ -40,6 +40,7 @@ export type ShowDetail = {
   cast: string[];
   genres: string[];
   mood: string;
+  visible?: boolean; // undefined or true = visible, false = hidden
 };
 
 export type BrandConfig = {

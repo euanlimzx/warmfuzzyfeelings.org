@@ -28,13 +28,16 @@ export function SavedPreviewClient({ config }: Props) {
     setSelectedShowId(id);
   }, []);
 
-  // Resolve show IDs to show data for each content row
+  // Resolve show IDs to show data for each content row (filtering out hidden shows)
   const resolvedRows = useMemo(() => {
     return config.contentRows.map((row) => ({
       title: row.title,
       items: row.showIds
         .map((id) => config.shows.find((s) => s.id === id))
-        .filter((show): show is BrandConfig["shows"][0] => show !== undefined),
+        .filter(
+          (show): show is BrandConfig["shows"][0] =>
+            show !== undefined && show.visible !== false,
+        ),
     }));
   }, [config.contentRows, config.shows]);
 

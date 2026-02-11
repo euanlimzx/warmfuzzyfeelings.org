@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useEffect, forwardRef } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 import type { BrandConfig } from "@/lib/brands";
 import { ImageUpload } from "./image-upload";
 
@@ -141,34 +142,75 @@ const ShowItem = forwardRef<
       index: number,
       updates: Partial<BrandConfig["shows"][0]>,
     ) => void;
+    canHide: boolean;
   }
 >(function ShowItem(
-  { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate },
+  { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate, canHide },
   ref,
 ) {
   const isOpen = openSectionKey === itemKey;
+  const isVisible = show.visible !== false;
+
+  const handleVisibilityToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isVisible && !canHide) {
+      toast.error("You must have at least 6 visible shows");
+      return;
+    }
+    onUpdate(index, { visible: !isVisible });
+  };
 
   return (
     <div ref={ref} className="bg-white">
-      <button
-        type="button"
-        onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
-        className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
-      >
-        <span
-          className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]"
-          style={{
-            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
-          }}
+      <div className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleVisibilityToggle}
+            className={`p-1 rounded transition-colors ${
+              isVisible
+                ? canHide
+                  ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  : "text-gray-300 cursor-not-allowed"
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            }`}
+            title={isVisible ? (canHide ? "Hide show" : "Minimum 6 shows required") : "Show in preview"}
+          >
+            {isVisible ? (
+              <Eye className="w-5 h-5" />
+            ) : (
+              <EyeOff className="w-5 h-5" />
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
+            className="flex-1 text-left"
+          >
+            <span
+              className={`font-bold text-[19px] tracking-[-0.02em] ${
+                isVisible ? "text-gray-900" : "text-gray-400"
+              }`}
+              style={{
+                fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+              }}
+            >
+              Show {index + 1}
+            </span>
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
+          className="p-1"
         >
-          Show {index + 1}
-        </span>
-        <ChevronDown
-          className={`w-5 h-5 text-gray-900 transition-transform ${
-            isOpen ? "" : "-rotate-90"
-          }`}
-        />
-      </button>
+          <ChevronDown
+            className={`w-5 h-5 text-gray-900 transition-transform ${
+              isOpen ? "" : "-rotate-90"
+            }`}
+          />
+        </button>
+      </div>
       {isOpen && (
         <div className="px-6 pb-6 space-y-4 bg-white">
           <TextInput
@@ -291,6 +333,10 @@ export function ConfigForm({
     newShows[index] = { ...newShows[index], ...updates };
     onChange({ ...config, shows: newShows });
   };
+
+  // Calculate if hiding another show is allowed (minimum 6 visible)
+  const visibleShowCount = config.shows.filter((s) => s.visible !== false).length;
+  const canHide = visibleShowCount > 6;
 
   return (
     <div className="h-full overflow-y-auto bg-white">
@@ -435,6 +481,7 @@ export function ConfigForm({
               openSectionKey={openSectionKey}
               onOpenSectionKeyChange={onOpenSectionKeyChange}
               onUpdate={updateShow}
+              canHide={canHide}
             />
           ))}
         </div>

@@ -4,6 +4,9 @@
 @import '@fontsource/inter/latin-600.css';
 @import '@fontsource/inter/latin-700.css';
 
+/* Bebas Neue font - local, no external requests */
+@import '@fontsource/bebas-neue/latin-400.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,6 +55,7 @@
     --netflix-red: 0 72% 51%;
     --netflix-dark: 0 0% 5%;
     --netflix-gray: 0 0% 18%;
+    --font-bebas: 'Bebas Neue', sans-serif;
   }
 }
 

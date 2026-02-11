@@ -320,6 +320,28 @@ export function ConfigForm({
           value={config.hero.description}
           onChange={(v) => update("hero", { description: v })}
         />
+        <TextInput
+          label="Play button label"
+          value={config.hero.playButtonLabel}
+          onChange={(v) => update("hero", { playButtonLabel: v })}
+          placeholder="Play"
+        />
+        <TextInput
+          label="My List button label"
+          value={config.hero.myListButtonLabel}
+          onChange={(v) => update("hero", { myListButtonLabel: v })}
+          placeholder="My List"
+        />
+        <TextInput
+          label="Mobile genre tags (comma-separated)"
+          value={config.hero.genreTags.join(", ")}
+          onChange={(v) =>
+            update("hero", {
+              genreTags: v.split(",").map((s) => s.trim()).filter(Boolean),
+            })
+          }
+          placeholder="Comedy, Family, Heartwarming"
+        />
       </Section>
 
       {/* Shows Database Section - Limited Fields */}

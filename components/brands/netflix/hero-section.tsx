@@ -29,17 +29,17 @@ export function HeroSection({
             src={hero.image || "/placeholder.svg"}
             alt={hero.imageAlt}
             fill
-            className="object-contain object-center"
+            className="object-contain object-right"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
         </div>
 
         {/* Content Overlay */}
         <div className="relative z-10 flex flex-col justify-end h-full px-12 pb-40">
           <h1
-            className={`text-7xl lg:text-8xl font-bold text-foreground mb-4 max-w-2xl leading-tight ${
+            className={`text-[clamp(2rem,5vw,5.5rem)] font-bold text-foreground mb-4 max-w-2xl leading-tight ${
               hero.titleFont === "bebas"
                 ? "font-bebas tracking-[0.12em]"
                 : hero.titleFont === "sf-pro"

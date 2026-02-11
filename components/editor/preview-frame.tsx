@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { useRef, useEffect, useCallback } from "react"
-import type { Brand, BrandConfig } from "@/lib/brands"
+import { useRef, useEffect, useCallback } from "react";
+import type { Brand, BrandConfig } from "@/lib/brands";
 
-type ViewportMode = "mobile" | "desktop"
+type ViewportMode = "mobile" | "desktop";
 
 interface PreviewFrameProps {
-  config: BrandConfig
-  viewport: ViewportMode
-  brand: Brand
-  fullScreen?: boolean
+  config: BrandConfig;
+  viewport: ViewportMode;
+  brand: Brand;
+  fullScreen?: boolean;
 }
 
 export function PreviewFrame({
@@ -18,44 +18,44 @@ export function PreviewFrame({
   brand,
   fullScreen = false,
 }: PreviewFrameProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-  const isReadyRef = useRef(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const isReadyRef = useRef(false);
 
   // Send config to iframe when it changes
   const sendConfig = useCallback(() => {
     if (iframeRef.current?.contentWindow && isReadyRef.current) {
       iframeRef.current.contentWindow.postMessage(
         { type: "CONFIG_UPDATE", config, viewport },
-        "*"
-      )
+        "*",
+      );
     }
-  }, [config, viewport])
+  }, [config, viewport]);
 
   // Listen for iframe ready signal
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
       if (event.data?.type === "PREVIEW_READY") {
-        isReadyRef.current = true
-        sendConfig()
+        isReadyRef.current = true;
+        sendConfig();
       }
     }
 
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [sendConfig])
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [sendConfig]);
 
   // Send config whenever it changes
   useEffect(() => {
-    sendConfig()
-  }, [sendConfig])
+    sendConfig();
+  }, [sendConfig]);
 
   // Resend config when viewport changes (iframe size change may need refresh)
   useEffect(() => {
     const timer = setTimeout(() => {
-      sendConfig()
-    }, 100)
-    return () => clearTimeout(timer)
-  }, [viewport, sendConfig])
+      sendConfig();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [viewport, sendConfig]);
 
   if (fullScreen) {
     return (
@@ -67,7 +67,7 @@ export function PreviewFrame({
           title="Preview"
         />
       </div>
-    )
+    );
   }
 
   if (viewport === "desktop") {
@@ -83,7 +83,7 @@ export function PreviewFrame({
               </div>
               <div className="mx-4 flex-1">
                 <div className="rounded-md bg-zinc-800 px-3 py-1 text-xs text-foreground/50">
-                  localhost:3000
+                  warmfuzzyfeelings.org
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@ export function PreviewFrame({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Mobile: use aspect-ratio like LandingPreview for reliable sizing
@@ -118,5 +118,5 @@ export function PreviewFrame({
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
 import { Inter, Bebas_Neue } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 
 import "./globals.css"
 
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en" className={bebasNeue.variable}>
       <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
         {children}
+        <Analytics />
       </body>
     </html>
   )

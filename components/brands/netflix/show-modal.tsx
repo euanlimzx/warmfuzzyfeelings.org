@@ -24,9 +24,10 @@ type ShowDetail = {
 interface ShowModalProps {
   show: ShowDetail | null;
   onClose: () => void;
+  onPlayClick?: () => void;
 }
 
-export function ShowModal({ show, onClose }: ShowModalProps) {
+export function ShowModal({ show, onClose, onPlayClick }: ShowModalProps) {
   const config = useConfig();
   const labels = config.modal;
 
@@ -113,6 +114,7 @@ export function ShowModal({ show, onClose }: ShowModalProps) {
           <div className="absolute bottom-4 md:bottom-6 left-6 md:left-10 flex items-center gap-2 md:gap-3 z-10">
             <button
               type="button"
+              onClick={() => onPlayClick?.()}
               className="flex items-center gap-2 px-5 md:px-8 py-1.5 md:py-2 bg-foreground text-background rounded font-semibold text-sm md:text-base hover:bg-foreground/80 transition-colors"
             >
               <Play className="w-4 h-4 md:w-5 md:h-5 fill-current" />

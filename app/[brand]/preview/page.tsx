@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/brands/netflix/hero-section"
 import { ContentRow } from "@/components/brands/netflix/content-row"
 import { BottomNav } from "@/components/brands/netflix/bottom-nav"
 import { ShowModal } from "@/components/brands/netflix/show-modal"
+import { FullscreenPlayerOverlay } from "@/components/brands/netflix/fullscreen-player-overlay"
 import { NetflixIntro } from "@/components/brands/netflix/netflix-intro"
 import { ConfigProvider } from "@/lib/config-context"
 import { getDefaultConfig } from "@/lib/brands"
@@ -19,6 +20,7 @@ export default function PreviewPage() {
   const [config, setConfig] = useState<BrandConfig>(() => getDefaultConfig(brand))
   const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
   const [editorViewport, setEditorViewport] = useState<EditorViewport>(null)
+  const [fullscreenPlayerOpen, setFullscreenPlayerOpen] = useState(false)
 
   // Derive show data from current config (updates when config changes)
   const selectedShow = selectedShowId
@@ -98,6 +100,7 @@ export default function PreviewPage() {
           onEditorHeroClick={
             editorViewport !== null ? handleEditorHeroClick : undefined
           }
+          onPlayClick={() => setFullscreenPlayerOpen(true)}
         />
 
         <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
@@ -113,7 +116,18 @@ export default function PreviewPage() {
 
         <div className="h-24 md:h-20" />
         <BottomNav />
-        <ShowModal show={selectedShow} onClose={() => setSelectedShowId(null)} />
+        <ShowModal
+          show={selectedShow}
+          onClose={() => setSelectedShowId(null)}
+          onPlayClick={() => {
+            setSelectedShowId(null)
+            setFullscreenPlayerOpen(true)
+          }}
+        />
+        <FullscreenPlayerOverlay
+          open={fullscreenPlayerOpen}
+          onClose={() => setFullscreenPlayerOpen(false)}
+        />
       </main>
     </ConfigProvider>
   )

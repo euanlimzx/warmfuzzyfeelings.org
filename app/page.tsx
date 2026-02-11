@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/brands/netflix/hero-section"
 import { ContentRow } from "@/components/brands/netflix/content-row"
 import { BottomNav } from "@/components/brands/netflix/bottom-nav"
 import { ShowModal } from "@/components/brands/netflix/show-modal"
+import { FullscreenPlayerOverlay } from "@/components/brands/netflix/fullscreen-player-overlay"
 import { NetflixIntro } from "@/components/brands/netflix/netflix-intro"
 import { ConfigProvider } from "@/lib/config-context"
 import { getBrandConfig } from "@/lib/brands"
@@ -15,6 +16,7 @@ export default function Page() {
   // Use Netflix config for the root page
   const config = getBrandConfig("netflix")
   const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
+  const [fullscreenPlayerOpen, setFullscreenPlayerOpen] = useState(false)
 
   // Derive show data from current config
   const selectedShow = selectedShowId
@@ -40,7 +42,7 @@ export default function Page() {
       <NetflixIntro />
       <main className="min-h-screen bg-background">
         <Navbar />
-        <HeroSection />
+        <HeroSection onPlayClick={() => setFullscreenPlayerOpen(true)} />
 
         {/* Content Rows - slightly overlapping the hero on desktop */}
         <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
@@ -61,7 +63,18 @@ export default function Page() {
         <BottomNav />
 
         {/* Show Detail Modal */}
-        <ShowModal show={selectedShow} onClose={() => setSelectedShowId(null)} />
+        <ShowModal
+          show={selectedShow}
+          onClose={() => setSelectedShowId(null)}
+          onPlayClick={() => {
+            setSelectedShowId(null)
+            setFullscreenPlayerOpen(true)
+          }}
+        />
+        <FullscreenPlayerOverlay
+          open={fullscreenPlayerOpen}
+          onClose={() => setFullscreenPlayerOpen(false)}
+        />
       </main>
     </ConfigProvider>
   )

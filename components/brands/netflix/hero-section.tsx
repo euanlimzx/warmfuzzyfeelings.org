@@ -6,9 +6,10 @@ import { useConfig } from "@/lib/config-context"
 
 interface HeroSectionProps {
   onEditorHeroClick?: () => void
+  onPlayClick?: () => void
 }
 
-export function HeroSection({ onEditorHeroClick }: HeroSectionProps) {
+export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps) {
   const config = useConfig()
   const hero = config.hero
 
@@ -54,6 +55,10 @@ export function HeroSection({ onEditorHeroClick }: HeroSectionProps) {
           <div className="flex items-center gap-3">
             <button
               type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onPlayClick?.()
+              }}
               className="flex items-center gap-2 px-8 py-2.5 bg-foreground text-background rounded font-semibold text-base hover:bg-foreground/80 transition-colors"
             >
               <Play className="w-5 h-5 fill-current" />
@@ -147,6 +152,10 @@ export function HeroSection({ onEditorHeroClick }: HeroSectionProps) {
           <div className="flex items-center gap-3 mt-4 px-2">
             <button
               type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onPlayClick?.()
+              }}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background rounded font-semibold text-base"
             >
               <Play className="w-5 h-5 fill-current" />

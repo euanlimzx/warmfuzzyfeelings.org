@@ -59,13 +59,13 @@ export function PreviewFrame({
   }, [viewport, sendConfig])
 
   const frameClasses = fullScreen
-    ? "w-full h-full bg-black"
+    ? "w-full h-full bg-white"
     : viewport === "desktop"
-      ? "w-full h-full max-w-[1200px] bg-zinc-800 rounded-lg"
-      : "w-full max-w-[390px] h-full max-h-[844px] bg-black rounded-[40px] p-2"
+      ? "w-full h-full max-w-[1200px] rounded-xl border border-gray-200 bg-white shadow-lg"
+      : "w-full max-w-[390px] h-full max-h-[844px] rounded-[40px] border border-gray-200 bg-white p-3 shadow-lg"
 
   return (
-    <div className="relative w-full h-full min-h-[200px] bg-zinc-900 rounded-lg overflow-hidden">
+    <div className="relative w-full h-full min-h-[200px] rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center p-4 transition-all duration-300">
         {/* Frame container - changes style based on viewport */}
         <div
@@ -73,29 +73,24 @@ export function PreviewFrame({
         >
           {/* Desktop browser chrome - only shown in desktop mode and non-fullscreen */}
           {!fullScreen && viewport === "desktop" && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-700 border-b border-zinc-600">
+            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 border-b border-gray-200">
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
               <div className="flex-1 mx-4">
-                <div className="bg-zinc-800 rounded-md px-3 py-1 text-xs text-foreground/50">
+                <div className="rounded-md border border-gray-200 bg-white px-3 py-1 text-xs text-gray-500">
                   localhost:3000
                 </div>
               </div>
             </div>
           )}
 
-          {/* Mobile notch - only shown in mobile mode and non-fullscreen */}
-          {!fullScreen && viewport === "mobile" && (
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-10" />
-          )}
-
           {/* Screen/Content area */}
           <div
             className={`flex-1 overflow-hidden ${
-              !fullScreen && viewport === "mobile" ? "bg-black rounded-[32px]" : ""
+              !fullScreen && viewport === "mobile" ? "bg-white rounded-[32px]" : ""
             }`}
           >
             <iframe

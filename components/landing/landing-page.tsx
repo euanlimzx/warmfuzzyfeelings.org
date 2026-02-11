@@ -1,5 +1,5 @@
 import { LandingPreview } from "./landing-preview";
-
+import { Highlighter } from "@/components/ui/highlighter";
 export function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -7,7 +7,15 @@ export function LandingPage() {
       <div className="flex flex-col items-center justify-center px-6 py-16 md:py-24">
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-start md:text-center text-zinc-900 tracking-tight leading-none max-w-4xl font-bold">
-          your valentine's day card, made creative.
+          your valentine's day card, made{" "}
+          <Highlighter
+            action="underline"
+            color="#FF0000"
+            strokeWidth={2}
+            iterations={2}
+          >
+            creative.
+          </Highlighter>
         </h1>
 
         {/* Subtitle */}

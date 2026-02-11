@@ -51,7 +51,7 @@ export function CreateButton({ config, brand, onSuccess }: CreateButtonProps) {
       type="button"
       onClick={handleCreate}
       disabled={isLoading}
-      className="flex items-center gap-2 px-4 py-2 bg-netflix-red hover:bg-netflix-red/90 disabled:bg-netflix-red/50 rounded-md text-sm font-medium transition-colors disabled:cursor-not-allowed"
+      className="flex items-center gap-2 px-4 py-2 bg-netflix-red hover:bg-netflix-red/90 disabled:bg-netflix-red/50 rounded-md text-sm font-medium text-white transition-colors disabled:cursor-not-allowed"
     >
       {isLoading ? (
         <>

@@ -122,7 +122,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
 
   return (
     <div className={className}>
-      <label className="block text-sm font-medium text-foreground/70 mb-1.5">
+      <label className="block text-sm font-medium text-gray-600 mb-1.5">
         {label}
       </label>
 
@@ -137,7 +137,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
       {hasImage ? (
         // Image preview with remove/replace buttons
         <div className="relative group">
-          <div className="relative aspect-video w-full overflow-hidden rounded-md border border-zinc-700 bg-zinc-800">
+          <div className="relative aspect-video w-full overflow-hidden rounded-md border border-gray-300 bg-gray-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={value}
@@ -164,7 +164,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
                 type="button"
                 onClick={handleClick}
                 disabled={isUploading}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 rounded-md text-sm font-medium transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-900 rounded-md text-sm font-medium transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-4 h-4 ${isUploading ? "animate-spin" : ""}`} />
                 Replace
@@ -173,7 +173,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
                 type="button"
                 onClick={handleRemove}
                 disabled={isUploading}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-500 rounded-md text-sm font-medium transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-md text-sm font-medium transition-colors disabled:opacity-50"
               >
                 <X className="w-4 h-4" />
                 Remove
@@ -194,18 +194,18 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
             aspect-video w-full rounded-md border-2 border-dashed
             cursor-pointer transition-colors
             ${isDragging
-              ? "border-netflix-red bg-netflix-red/10"
+              ? "border-netflix-red bg-red-50"
               : error
-                ? "border-red-500 bg-red-500/10"
-                : "border-zinc-700 hover:border-zinc-600 bg-zinc-800/50 hover:bg-zinc-800"
+                ? "border-red-500 bg-red-50"
+                : "border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100"
             }
             ${isUploading ? "pointer-events-none opacity-50" : ""}
           `}
         >
           {isUploading ? (
             <>
-              <RefreshCw className="w-8 h-8 text-foreground/50 animate-spin" />
-              <span className="text-sm text-foreground/50">
+              <RefreshCw className="w-8 h-8 text-gray-400 animate-spin" />
+              <span className="text-sm text-gray-500">
                 {loadingPhase === "uploading" ? "Uploading..." : "Loading preview..."}
               </span>
             </>
@@ -213,15 +213,15 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
             <>
               <AlertCircle className="w-8 h-8 text-red-500" />
               <span className="text-sm text-red-500 text-center px-4">{error}</span>
-              <span className="text-xs text-foreground/40">Click to try again</span>
+              <span className="text-xs text-gray-400">Click to try again</span>
             </>
           ) : (
             <>
-              <Upload className="w-8 h-8 text-foreground/50" />
-              <span className="text-sm text-foreground/50">
+              <Upload className="w-8 h-8 text-gray-400" />
+              <span className="text-sm text-gray-500">
                 {isDragging ? "Drop image here" : "Click or drag to upload"}
               </span>
-              <span className="text-xs text-foreground/40">Max 5MB</span>
+              <span className="text-xs text-gray-400">Max 5MB</span>
             </>
           )}
         </div>

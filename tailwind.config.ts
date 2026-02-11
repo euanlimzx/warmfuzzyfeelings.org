@@ -80,7 +80,6 @@ const config: Config = {
           'sans-serif',
         ],
         bebas: ['var(--font-bebas)', 'sans-serif'],
-        coolvetica: ['Coolvetica Light', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

@@ -52,7 +52,7 @@ export type BrandConfig = {
     image: string
     mobileImage: string
     imageAlt: string
-    titleFont: "default" | "bebas"
+    titleFont: "default" | "bebas" | "sf-pro"
     title: string
     description: string
     genreTags: string[]

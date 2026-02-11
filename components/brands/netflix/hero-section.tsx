@@ -1,17 +1,20 @@
-"use client"
+"use client";
 
-import { Play, Info, Plus } from "lucide-react"
-import Image from "next/image"
-import { useConfig } from "@/lib/config-context"
+import { Play, Info, Plus } from "lucide-react";
+import Image from "next/image";
+import { useConfig } from "@/lib/config-context";
 
 interface HeroSectionProps {
-  onEditorHeroClick?: () => void
-  onPlayClick?: () => void
+  onEditorHeroClick?: () => void;
+  onPlayClick?: () => void;
 }
 
-export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps) {
-  const config = useConfig()
-  const hero = config.hero
+export function HeroSection({
+  onEditorHeroClick,
+  onPlayClick,
+}: HeroSectionProps) {
+  const config = useConfig();
+  const hero = config.hero;
 
   return (
     <>
@@ -37,7 +40,11 @@ export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps
         <div className="relative z-10 flex flex-col justify-end h-full px-12 pb-40">
           <h1
             className={`text-7xl lg:text-8xl font-bold text-foreground mb-4 max-w-2xl leading-tight ${
-              hero.titleFont === "bebas" ? "font-bebas tracking-[0.12em]" : "tracking-tight"
+              hero.titleFont === "bebas"
+                ? "font-bebas tracking-[0.12em]"
+                : hero.titleFont === "sf-pro"
+                  ? "font-sans tracking-tight"
+                  : "tracking-tight"
             }`}
             style={
               hero.titleFont === "default"
@@ -56,8 +63,8 @@ export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps
             <button
               type="button"
               onClick={(e) => {
-                e.stopPropagation()
-                onPlayClick?.()
+                e.stopPropagation();
+                onPlayClick?.();
               }}
               className="flex items-center gap-2 px-8 py-2.5 bg-foreground text-background rounded font-semibold text-base hover:bg-foreground/80 transition-colors"
             >
@@ -130,7 +137,11 @@ export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps
             <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center">
               <h1
                 className={`text-4xl font-extrabold text-foreground mb-2 text-center ${
-                  hero.titleFont === "bebas" ? "font-bebas tracking-[0.12em]" : "tracking-widest"
+                  hero.titleFont === "bebas"
+                    ? "font-bebas tracking-[0.12em]"
+                    : hero.titleFont === "sf-pro"
+                      ? "font-sans tracking-tight"
+                      : "tracking-widest"
                 }`}
               >
                 {hero.title}
@@ -153,8 +164,8 @@ export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps
             <button
               type="button"
               onClick={(e) => {
-                e.stopPropagation()
-                onPlayClick?.()
+                e.stopPropagation();
+                onPlayClick?.();
               }}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background rounded font-semibold text-base"
             >
@@ -173,5 +184,5 @@ export function HeroSection({ onEditorHeroClick, onPlayClick }: HeroSectionProps
         </div>
       </section>
     </>
-  )
+  );
 }

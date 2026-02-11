@@ -47,20 +47,20 @@ const Section = forwardRef<
   }
 
   return (
-    <div ref={ref} className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div ref={ref} className="border border-gray-200 rounded-lg overflow-hidden">
       <button
         type="button"
         onClick={handleToggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
       >
-        <span className="font-medium text-foreground">{title}</span>
+        <span className="font-medium text-gray-900">{title}</span>
         <ChevronDown
-          className={`w-4 h-4 text-foreground/60 transition-transform ${
+          className={`w-4 h-4 text-gray-500 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
-      {isOpen && <div className="p-4 space-y-4">{children}</div>}
+      {isOpen && <div className="p-4 space-y-4 bg-white">{children}</div>}
     </div>
   )
 })
@@ -79,7 +79,7 @@ function TextInput({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-foreground/70 mb-1.5">
+      <label className="block text-sm font-medium text-gray-600 mb-1.5">
         {label}
       </label>
       <input
@@ -87,7 +87,7 @@ function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
+        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
       />
     </div>
   )
@@ -98,22 +98,25 @@ function TextArea({
   value,
   onChange,
   rows = 3,
+  placeholder,
 }: {
   label: string
   value: string
   onChange: (value: string) => void
   rows?: number
+  placeholder?: string
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-foreground/70 mb-1.5">
+      <label className="block text-sm font-medium text-gray-600 mb-1.5">
         {label}
       </label>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent resize-none"
+        placeholder={placeholder}
+        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent resize-none"
       />
     </div>
   )
@@ -137,23 +140,23 @@ const ShowItem = forwardRef<
   const isOpen = openSectionKey === itemKey
 
   return (
-    <div ref={ref} className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div ref={ref} className="border border-gray-200 rounded-lg overflow-hidden">
       <button
         type="button"
         onClick={() =>
           onOpenSectionKeyChange(isOpen ? null : itemKey)
         }
-        className="w-full flex items-center justify-between px-4 py-3 bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
       >
-        <span className="font-medium text-foreground">Show {index + 1}</span>
+        <span className="font-medium text-gray-900">Show {index + 1}</span>
         <ChevronDown
-          className={`w-4 h-4 text-foreground/60 transition-transform ${
+          className={`w-4 h-4 text-gray-500 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
       {isOpen && (
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4 bg-white">
           <TextInput
             label="Title"
             value={show.title}
@@ -297,20 +300,21 @@ export function ConfigForm({
           onChange={(v) => update("hero", { mobileImage: v })}
         />
         <div>
-          <label className="block text-sm font-medium text-foreground/70 mb-1.5">
+          <label className="block text-sm font-medium text-gray-600 mb-1.5">
             Title Font
           </label>
           <select
             value={config.hero.titleFont ?? "default"}
             onChange={(e) =>
               update("hero", {
-                titleFont: e.target.value as "default" | "bebas",
+                titleFont: e.target.value as "default" | "bebas" | "sf-pro",
               })
             }
-            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-netflix-red focus:border-transparent"
           >
             <option value="default">Default (Georgia serif)</option>
             <option value="bebas">Bebas Neue</option>
+            <option value="sf-pro">SF Pro Display</option>
           </select>
         </div>
         <TextInput

@@ -47,10 +47,10 @@ export default function EditPage() {
   if (!isBrowserMobile) {
     return (
       <div className="h-screen flex bg-zinc-950">
-        {/* Left Panel - Config Form */}
-        <div className="w-[400px] flex-shrink-0 border-r border-zinc-800 bg-zinc-900 flex flex-col">
-          <div className="h-14 flex items-center justify-between px-6 border-b border-zinc-800">
-            <h1 className="text-lg font-semibold text-foreground">
+        {/* Left Panel - Config Form (Light Mode) */}
+        <div className="w-[400px] flex-shrink-0 border-r border-gray-200 bg-white flex flex-col">
+          <div className="h-14 flex items-center justify-between px-6 border-b border-gray-200">
+            <h1 className="text-lg font-semibold text-gray-900">
               Edit Configuration
             </h1>
             <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
@@ -65,7 +65,7 @@ export default function EditPage() {
           </div>
         </div>
 
-        {/* Right Panel - Preview */}
+        {/* Right Panel - Preview (stays dark) */}
         <div className="flex-1 flex flex-col">
           <div className="h-14 flex items-center justify-between px-6 border-b border-zinc-800">
             <h2 className="text-sm font-medium text-foreground/70">Preview</h2>
@@ -118,9 +118,9 @@ export default function EditPage() {
   return (
     <div className="relative h-screen bg-zinc-950">
       {mobileView === "editor" ? (
-        <div className="flex h-full flex-col bg-zinc-900">
-          <div className="h-14 flex items-center justify-between px-4 border-b border-zinc-800">
-            <h1 className="text-base font-semibold text-foreground">
+        <div className="flex h-full flex-col bg-white">
+          <div className="h-14 flex items-center justify-between px-4 border-b border-gray-200">
+            <h1 className="text-base font-semibold text-gray-900">
               Edit Configuration
             </h1>
             <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
@@ -183,7 +183,7 @@ export default function EditPage() {
       <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4">
         <button
           type="button"
-          className="pointer-events-auto w-full max-w-md rounded-full bg-netflix-red px-4 py-3 text-sm font-semibold text-foreground shadow-lg shadow-black/50"
+          className="pointer-events-auto w-full max-w-md rounded-full bg-netflix-red px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/50"
           onClick={() =>
             setMobileView((prev) => (prev === "editor" ? "preview" : "editor"))
           }

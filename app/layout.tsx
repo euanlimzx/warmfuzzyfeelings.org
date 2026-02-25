@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 
 import "./globals.css";
+import { MaintenanceGate } from "@/components/maintenance-gate";
 
 export const metadata: Metadata = {
   title: "warmfuzzyfeelings.org",
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-background text-foreground overflow-x-hidden font-sans">
+        <MaintenanceGate />
         {children}
         <Toaster />
         <Analytics />
